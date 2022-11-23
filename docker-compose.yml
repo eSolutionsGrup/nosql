@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+  neo4j:
+    image: docker.io/bitnami/neo4j:5.1.0
+    ports:
+      - '7474:7474'
+      - '7473:7473'
+      - '7687:7687'     
+    networks:
+      - academy      
+  mongo:
+    image: mongo:6.0.2
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=academy
+      - MONGO_INITDB_ROOT_PASSWORD=passwd      
+    networks:
+      - academy
+
+  redis:
+    image: redis:7.0.5-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning      
+    networks:
+      - academy
+
+  c1:
+    image: cassandra:3.9
+    environment:
+        - CASSANDRA_BROADCAST_ADDRESS=c1
+    networks:
+      - academy             
+  c2:
+    image: cassandra:3.9
+    environment:
+        - CASSANDRA_BROADCAST_ADDRESS=c2
+        - CASSANDRA_SEEDS=c1    
+    links:
+        - c1:c1
+    networks:
+      - academy             
+  c3:
+    image: cassandra:3.9
+    environment:
+        - CASSANDRA_BROADCAST_ADDRESS=c3  
+        - CASSANDRA_SEEDS=c1    
+    links:
+        - c1      
+    networks:
+      - academy     
+
+  solr:
+    image: bitnami/solr:8
+    user: root
+    networks:
+      - academy
+    ports:
+      - '8983:8983'
+networks:
+  academy:
