@@ -1,6 +1,6 @@
 # NoSQL 
 
-All the course file for the NoSQL tutorial series power by [eSolution Academy](https://academy.esolutions.ro/).
+All the course files for the NoSQL tutorial series power by [eSolution Academy](https://academy.esolutions.ro/).
 
 - Key-Value
 - Document 
